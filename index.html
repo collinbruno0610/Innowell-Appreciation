@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Innowell – Appreciation Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --navy:    #0D1B2A;
+  --ink:     #1A2B3C;
+  --gold:    #D4A847;
+  --gold-lt: #F0C96A;
+  --cream:   #FAF6EF;
+  --sage:    #4CAF50;
+  --coral:   #E05A4B;
+  --sky:     #3A8FC6;
+  --muted:   #8A9BAD;
+  --card:    #FFFFFF;
+  --border:  #E3E8EE;
+  --shadow:  0 4px 24px rgba(13,27,42,.09);
+  --r:       14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+/* ═══════════════════════════
+   HEADER / NAV
+═══════════════════════════ */
+header {
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,.25);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'DM Serif Display', serif;
+  color: #fff;
+  font-size: 1.3rem;
+  letter-spacing: -.3px;
+}
+
+.logo .badge {
+  background: var(--gold);
+  color: var(--navy);
+  font-size: .6rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  letter-spacing: .08em;
+  padding: 2px 7px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+nav {
+  display: flex;
+  gap: 4px;
+}
+
+nav button {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.65);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .88rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all .18s;
+}
+
+nav button.active, nav button:hover {
+  background: rgba(212,168,71,.15);
+  color: var(--gold-lt);
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 500;
+}
+
+.avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--coral));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: .8rem; color: #fff;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════
+   PAGES
+═══════════════════════════ */
+.page { display: none; animation: fadeIn .3s ease; }
+.page.active { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ═══════════════════════════
+   HERO BANNER
+═══════════════════════════ */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 60%, #243b55 100%);
+  padding: 52px 40px 44px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(212,168,71,.12) 0%, transparent 60%);
+}
+
+.hero-inner { position: relative; max-width: 900px; }
+
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.hero h1 span { color: var(--gold-lt); font-style: italic; }
+
+.hero p {
+  color: rgba(255,255,255,.7);
+  font-size: .95rem;
+  max-width: 520px;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem;
+  color: var(--gold-lt);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: .75rem;
+  color: rgba(255,255,255,.55);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  margin-top: 2px;
+}
+
+/* ═══════════════════════════
+   WALL (FEED)
+═══════════════════════════ */
+.wall-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 28px;
+  align-items: start;
+}
+
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  color: var(--navy);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Feed cards */
+.feed { display: flex; flex-direction: column; gap: 16px; }
+
+.post-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px 22px;
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+}
+
+.post-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(13,27,42,.13);
+}
+
+.post-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.post-meta { flex: 1; }
+
+.post-names {
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.post-names .to { color: var(--sky); }
+
+.post-date {
+  font-size: .75rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.category-badge {
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.cat-Innovation { background: #EEF4FF; color: #4062CA; }
+.cat-Leadership { background: #FFF4E5; color: #C06A00; }
+.cat-Excellence { background: #FFF0F3; color: #C0274A; }
+.cat-Teamwork   { background: #E8FAF0; color: #1A7A44; }
+.cat-Dedication { background: #F3F0FF; color: #6C3DB1; }
+
+.post-message {
+  font-size: .92rem;
+  line-height: 1.65;
+  color: #3A4A5C;
+  margin-bottom: 14px;
+  font-style: italic;
+}
+
+.post-message::before { content: '"'; color: var(--gold); font-size: 1.4rem; line-height: 0; vertical-align: -.3em; margin-right: 3px; }
+.post-message::after  { content: '"'; color: var(--gold); font-size: 1.4rem; line-height: 0; vertical-align: -.3em; margin-left: 3px; }
+
+.post-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.react-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: .8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  transition: all .18s;
+}
+
+.react-btn:hover, .react-btn.active {
+  border-color: var(--gold);
+  color: var(--navy);
+  background: rgba(212,168,71,.08);
+}
+
+.cert-btn {
+  margin-left: auto;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 13px;
+  font-size: .75rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background .18s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cert-btn:hover { background: var(--sky); }
+
+/* ── Sidebar ── */
+.sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+.sidebar-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.sidebar-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+  margin-bottom: 14px;
+  color: var(--navy);
+}
+
+/* Leaderboard */
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.lb-row:last-child { border-bottom: none; }
+
+.lb-rank {
+  width: 22px;
+  text-align: center;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.lb-rank.gold { color: var(--gold); }
+.lb-rank.silver { color: #A0A0A0; }
+.lb-rank.bronze { color: #C87941; }
+
+.lb-name { flex: 1; font-size: .85rem; font-weight: 500; }
+.lb-count { font-size: .8rem; color: var(--muted); }
+
+/* Category pills */
+.cat-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.cat-pill {
+  padding: 5px 13px;
+  border-radius: 20px;
+  font-size: .75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+
+.cat-pill:hover { opacity: .8; }
+
+/* ═══════════════════════════
+   SUBMIT PAGE
+═══════════════════════════ */
+.form-container {
+  max-width: 680px;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+.form-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 36px 40px;
+  box-shadow: var(--shadow);
+}
+
+.form-card h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+
+.form-card .sub {
+  color: var(--muted);
+  font-size: .88rem;
+  margin-bottom: 28px;
+}
+
+.field { margin-bottom: 20px; }
+
+label {
+  display: block;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+  letter-spacing: .02em;
+}
+
+label span { color: var(--coral); }
+
+input[type=text], select, textarea {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem;
+  color: var(--navy);
+  background: #fff;
+  outline: none;
+  transition: border-color .18s, box-shadow .18s;
+}
+
+input[type=text]:focus, select:focus, textarea:focus {
+  border-color: var(--sky);
+  box-shadow: 0 0 0 3px rgba(58,143,198,.12);
+}
+
+textarea { resize: vertical; min-height: 100px; }
+
+/* Category selector grid */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.cat-opt {
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 6px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .18s;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.cat-opt .icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+
+.cat-opt:hover { border-color: var(--gold); color: var(--navy); }
+.cat-opt.selected { border-color: var(--gold); background: rgba(212,168,71,.1); color: var(--navy); }
+
+.file-zone {
+  border: 1.5px dashed var(--border);
+  border-radius: 9px;
+  padding: 18px;
+  text-align: center;
+  font-size: .82rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color .18s;
+}
+
+.file-zone:hover { border-color: var(--sky); }
+
+.submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--navy), #1e3a5f);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all .2s;
+  letter-spacing: .01em;
+  margin-top: 8px;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(135deg, var(--sky), #1e3a5f);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(13,27,42,.2);
+}
+
+/* ═══════════════════════════
+   CERTIFICATE MODAL
+═══════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13,27,42,.6);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.cert-modal {
+  background: #fff;
+  border-radius: 18px;
+  width: min(680px, 100%);
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,.3);
+  transform: scale(.95);
+  transition: transform .25s;
+}
+
+.modal-overlay.open .cert-modal { transform: scale(1); }
+
+/* The certificate itself */
+.certificate {
+  background: linear-gradient(160deg, #fff 60%, #faf3e0 100%);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.cert-border-outer {
+  border: 3px solid var(--gold);
+  margin: 18px;
+  border-radius: 10px;
+  padding: 30px 36px;
+  position: relative;
+}
+
+.cert-border-outer::before, .cert-border-outer::after {
+  content: '✦';
+  position: absolute;
+  color: var(--gold);
+  font-size: 1.2rem;
+}
+.cert-border-outer::before { top: -14px; left: 50%; transform: translateX(-50%); background: #fff; padding: 0 6px; }
+.cert-border-outer::after  { bottom: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(160deg, #fff 60%, #faf3e0 100%); padding: 0 6px; }
+
+.cert-watermark {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 8rem;
+  opacity: .04;
+  pointer-events: none;
+}
+
+.cert-logo-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.cert-logo-line .brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  color: var(--navy);
+  letter-spacing: -.2px;
+}
+
+.cert-logo-line .logo-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold);
+  font-weight: 900; font-size: .9rem;
+}
+
+.cert-title-line {
+  text-align: center;
+  font-size: .7rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.cert-main-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.9rem;
+  text-align: center;
+  color: var(--navy);
+  margin-bottom: 16px;
+}
+
+.cert-main-title .italic { font-style: italic; color: var(--gold); }
+
+.cert-divider {
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 14px 0;
+}
+
+.cert-presented { text-align: center; font-size: .8rem; color: var(--muted); margin-bottom: 4px; }
+
+.cert-recipient {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem;
+  text-align: center;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.cert-category-badge {
+  display: inline-block;
+  margin: 0 auto 14px;
+  display: flex;
+  justify-content: center;
+}
+
+.cert-message {
+  font-size: .88rem;
+  text-align: center;
+  color: #4A5568;
+  line-height: 1.65;
+  font-style: italic;
+  margin-bottom: 20px;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cert-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 20px;
+}
+
+.cert-sig {
+  text-align: center;
+}
+
+.cert-sig-line {
+  width: 120px;
+  height: 1px;
+  background: var(--navy);
+  margin-bottom: 4px;
+}
+
+.cert-sig-name { font-size: .75rem; font-weight: 600; color: var(--navy); }
+.cert-sig-role { font-size: .65rem; color: var(--muted); }
+
+.modal-actions {
+  padding: 14px 22px;
+  background: #f8f9fb;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border);
+}
+
+.btn-close {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .85rem;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all .18s;
+}
+
+.btn-close:hover { border-color: var(--muted); color: var(--navy); }
+
+.btn-download {
+  background: var(--navy);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .85rem;
+  cursor: pointer;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background .18s;
+}
+
+.btn-download:hover { background: var(--sky); }
+
+/* ═══════════════════════════
+   MY CERTS PAGE
+═══════════════════════════ */
+.certs-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.cert-thumb {
+  background: linear-gradient(145deg, #fff, #faf3e0);
+  border: 2px solid var(--gold);
+  border-radius: var(--r);
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.cert-thumb::before {
+  content: '🏆';
+  position: absolute;
+  top: -10px; right: -10px;
+  font-size: 3rem;
+  opacity: .08;
+}
+
+.cert-thumb:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(212,168,71,.2);
+}
+
+.cert-thumb .ct-cat {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.cert-thumb .ct-from {
+  font-size: .8rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.cert-thumb .ct-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 3px;
+}
+
+.cert-thumb .ct-date {
+  font-size: .72rem;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.cert-thumb .ct-dl {
+  margin-top: 12px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 14px;
+  font-size: .75rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background .18s;
+}
+
+.cert-thumb .ct-dl:hover { background: var(--sky); }
+
+/* ═══════════════════════════
+   SUCCESS TOAST
+═══════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--sage);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: .88rem;
+  font-weight: 600;
+  z-index: 300;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+  box-shadow: 0 8px 24px rgba(76,175,80,.35);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ═══════════════════════════
+   EMPTY STATE
+═══════════════════════════ */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+}
+
+.empty .big { font-size: 3rem; margin-bottom: 10px; }
+.empty p { font-size: .9rem; }
+
+/* ═══════════════════════════
+   RESPONSIVE
+═══════════════════════════ */
+@media (max-width: 768px) {
+  .wall-container { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  nav button span { display: none; }
+  .cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .form-card { padding: 24px 20px; }
+  header { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ HEADER ═══════ -->
+<header>
+  <div class="logo">
+    <div style="width:32px;height:32px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.9rem;color:var(--navy)">IW</div>
+    Innowell
+    <div class="badge">Appreciation Portal</div>
+  </div>
+
+  <nav>
+    <button class="active" onclick="showPage('wall',this)">🏠 <span>Wall</span></button>
+    <button onclick="showPage('submit',this)">✨ <span>Appreciate</span></button>
+    <button onclick="showPage('mycerts',this)">🎖️ <span>My Certs</span></button>
+  </nav>
+
+  <div class="user-chip">
+    <div class="avatar" id="userAvatarHdr">TK</div>
+    <span id="userNameHdr">Thilak R.</span>
+  </div>
+</header>
+
+<!-- ═══════ WALL PAGE ═══════ -->
+<div class="page active" id="page-wall">
+  <div class="hero">
+    <div class="hero-inner">
+      <h1>Celebrating <span>Excellence</span>,<br>Together.</h1>
+      <p>A space where every contribution gets recognized. Spread appreciation, earn your stars.</p>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Appreciations</div></div>
+        <div class="stat"><div class="stat-num" id="statWeek">0</div><div class="stat-label">This Week</div></div>
+        <div class="stat"><div class="stat-num" id="statEmployees">0</div><div class="stat-label">Employees Recognized</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wall-container">
+    <!-- Feed -->
+    <div>
+      <div class="section-title">📣 Appreciation Wall</div>
+      <div class="feed" id="feed"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-card">
+        <h3>🏆 Top Recognized</h3>
+        <div id="leaderboard"></div>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>🗂️ Browse by Category</h3>
+        <div class="cat-pills">
+          <div class="cat-pill cat-Innovation" onclick="filterFeed('Innovation')">💡 Innovation</div>
+          <div class="cat-pill cat-Leadership" onclick="filterFeed('Leadership')">👑 Leadership</div>
+          <div class="cat-pill cat-Excellence" onclick="filterFeed('Excellence')">⭐ Excellence</div>
+          <div class="cat-pill cat-Teamwork"   onclick="filterFeed('Teamwork')">🤝 Teamwork</div>
+          <div class="cat-pill cat-Dedication" onclick="filterFeed('Dedication')">🔥 Dedication</div>
+          <div class="cat-pill" style="background:#f0f0f0;color:#666" onclick="filterFeed(null)">All</div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>ℹ️ How It Works</h3>
+        <div style="font-size:.82rem;color:var(--muted);line-height:1.7">
+          <p>1. Click <strong>Appreciate</strong> to recognize a colleague.</p>
+          <p style="margin-top:6px">2. Choose a category &amp; write your message.</p>
+          <p style="margin-top:6px">3. Your post appears on the wall instantly.</p>
+          <p style="margin-top:6px">4. The recipient gets a downloadable certificate.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SUBMIT PAGE ═══════ -->
+<div class="page" id="page-submit">
+  <div class="form-container">
+    <div class="form-card">
+      <h2>✨ Give Appreciation</h2>
+      <p class="sub">Recognize a colleague's contribution — it only takes a moment.</p>
+
+      <div class="field">
+        <label>From (You) <span>*</span></label>
+        <input type="text" id="fFrom" value="Thilak R." readonly style="background:#f8f9fb;color:var(--muted)" />
+      </div>
+
+      <div class="field">
+        <label>Appreciate (Recipient) <span>*</span></label>
+        <select id="fTo">
+          <option value="">— Select Employee —</option>
+          <option>Ramya G.</option>
+          <option>Balaji S.</option>
+          <option>Priya M.</option>
+          <option>Arjun K.</option>
+          <option>Sunita R.</option>
+          <option>Kiran V.</option>
+          <option>Deepa N.</option>
+          <option>Manoj T.</option>
+          <option>Lakshmi P.</option>
+          <option>Rohit A.</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Category <span>*</span></label>
+        <div class="cat-grid">
+          <div class="cat-opt" onclick="selectCat(this,'Innovation')"><span class="icon">💡</span>Innovation</div>
+          <div class="cat-opt" onclick="selectCat(this,'Leadership')"><span class="icon">👑</span>Leadership</div>
+          <div class="cat-opt" onclick="selectCat(this,'Excellence')"><span class="icon">⭐</span>Excellence</div>
+          <div class="cat-opt" onclick="selectCat(this,'Teamwork')"><span class="icon">🤝</span>Teamwork</div>
+          <div class="cat-opt" onclick="selectCat(this,'Dedication')"><span class="icon">🔥</span>Dedication</div>
+        </div>
+        <input type="hidden" id="fCategory" />
+      </div>
+
+      <div class="field">
+        <label>Reason for Appreciation <span>*</span></label>
+        <input type="text" id="fReason" placeholder="e.g. Outstanding presentation on Q3 results" />
+      </div>
+
+      <div class="field">
+        <label>Appreciation Message <span>*</span></label>
+        <textarea id="fMessage" placeholder="Write a heartfelt message of recognition..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Attachment (Optional)</label>
+        <div class="file-zone" onclick="document.getElementById('fFile').click()">
+          📎 Click to attach a file (PDF, Image)
+          <input type="file" id="fFile" style="display:none" />
+        </div>
+      </div>
+
+      <button class="submit-btn" onclick="submitAppreciation()">🎉 Publish Appreciation</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MY CERTS PAGE ═══════ -->
+<div class="page" id="page-mycerts">
+  <div class="certs-container">
+    <div class="section-title">🎖️ My Certificates</div>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:24px">Certificates you've received from your colleagues.</p>
+    <div class="certs-grid" id="myCerts"></div>
+  </div>
+</div>
+
+<!-- ═══════ CERTIFICATE MODAL ═══════ -->
+<div class="modal-overlay" id="certModal">
+  <div class="cert-modal">
+    <div class="certificate">
+      <div class="cert-border-outer">
+        <div class="cert-watermark">🏆</div>
+
+        <div class="cert-logo-line">
+          <div class="logo-icon">IW</div>
+          <span class="brand">Innowell Engineering International</span>
+        </div>
+
+        <div class="cert-title-line">Certificate of Appreciation</div>
+        <div class="cert-main-title">Certificate of <span class="italic">Appreciation</span></div>
+        <div class="cert-divider"></div>
+
+        <div class="cert-presented">This certificate is proudly presented to</div>
+        <div class="cert-recipient" id="certRecipient">—</div>
+
+        <div class="cert-category-badge">
+          <span class="category-badge" id="certCatBadge">—</span>
+        </div>
+
+        <div class="cert-message" id="certMessage">—</div>
+
+        <div class="cert-divider"></div>
+
+        <div class="cert-footer">
+          <div class="cert-sig">
+            <div class="cert-sig-line"></div>
+            <div class="cert-sig-name" id="certIssuer">—</div>
+            <div class="cert-sig-role">Issuer / Colleague</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:2rem">⭐</div>
+            <div style="font-size:.7rem;color:var(--muted);margin-top:2px" id="certDate">—</div>
+          </div>
+          <div class="cert-sig">
+            <div class="cert-sig-line"></div>
+            <div class="cert-sig-name">HR Advisor</div>
+            <div class="cert-sig-role">Innowell HR</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-close" onclick="closeCert()">✕ Close</button>
+      <button class="btn-download" onclick="downloadCertText()">⬇ Download Certificate</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ TOAST ═══════ -->
+<div class="toast" id="toast">✅ Appreciation published!</div>
+
+<script>
+/* ─── State ─── */
+const CURRENT_USER = "Thilak R.";
+
+const seed = [
+  { id:1, from:"Ramya G.", to:"Balaji S.", cat:"Leadership", reason:"Driving the HRMS rollout", msg:"Your calm leadership during the portal launch kept the entire team focused. You lead by example every single day.", date:"2025-03-18", likes:4, claps:7, celebrate:2, reactions:{} },
+  { id:2, from:"Priya M.", to:"Thilak R.", cat:"Excellence", reason:"Banking domain advisory", msg:"Your insights on core banking modernization saved us weeks of research. Truly a subject matter expert.", date:"2025-03-17", likes:6, claps:9, celebrate:5, reactions:{} },
+  { id:3, from:"Balaji S.", to:"Ramya G.", cat:"Dedication", reason:"Going above and beyond on HR docs", msg:"Ramya, your meticulous attention to every HR process document ensures nothing slips through. Thank you!", date:"2025-03-16", likes:3, claps:5, celebrate:3, reactions:{} },
+  { id:4, from:"Arjun K.", to:"Priya M.", cat:"Teamwork", reason:"Cross-functional collaboration", msg:"Priya bridged the gap between tech and business beautifully. Our sprint would have failed without your coordination.", date:"2025-03-15", likes:5, claps:4, celebrate:2, reactions:{} },
+  { id:5, from:"Thilak R.", to:"Kiran V.", cat:"Innovation", reason:"Automated reporting pipeline", msg:"Kiran's automated dashboard cut our reporting time by 70%. That's a game-changer for the entire analytics team.", date:"2025-03-14", likes:8, claps:11, celebrate:6, reactions:{} },
+];
+
+let posts = [...seed];
+let currentFilter = null;
+let activeCertData = null;
+
+/* ─── Nav ─── */
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'wall') renderFeed();
+  if (id === 'mycerts') renderMyCerts();
+}
+
+/* ─── Feed Render ─── */
+function renderFeed() {
+  const feed = document.getElementById('feed');
+  const filtered = currentFilter ? posts.filter(p => p.cat === currentFilter) : posts;
+
+  if (!filtered.length) {
+    feed.innerHTML = `<div class="empty"><div class="big">💬</div><p>No appreciations yet${currentFilter ? ' in this category' : ''}.</p></div>`;
+    return;
+  }
+
+  feed.innerHTML = filtered.slice().reverse().map(p => `
+    <div class="post-card" id="post-${p.id}">
+      <div class="post-header">
+        <div class="avatar" style="background:${avatarColor(p.from)}">${initials(p.from)}</div>
+        <div class="post-meta">
+          <div class="post-names">${p.from} → <span class="to">${p.to}</span></div>
+          <div class="post-date">${fmtDate(p.date)} · ${p.reason}</div>
+        </div>
+        <span class="category-badge cat-${p.cat}">${catIcon(p.cat)} ${p.cat}</span>
+      </div>
+      <div class="post-message">${p.msg}</div>
+      <div class="post-actions">
+        <button class="react-btn ${p.reactions['like'] ? 'active' : ''}" onclick="react(${p.id},'like',this)">👍 ${p.likes}</button>
+        <button class="react-btn ${p.reactions['clap'] ? 'active' : ''}" onclick="react(${p.id},'clap',this)">👏 ${p.claps}</button>
+        <button class="react-btn ${p.reactions['celebrate'] ? 'active' : ''}" onclick="react(${p.id},'celebrate',this)">🎉 ${p.celebrate}</button>
+        <button class="cert-btn" onclick="openCert(${p.id})">🎖️ View Certificate</button>
+      </div>
+    </div>
+  `).join('');
+
+  updateStats();
+  renderLeaderboard();
+}
+
+function filterFeed(cat) {
+  currentFilter = cat;
+  renderFeed();
+}
+
+/* ─── Stats ─── */
+function updateStats() {
+  document.getElementById('statTotal').textContent = posts.length;
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 7);
+  document.getElementById('statWeek').textContent = posts.filter(p => new Date(p.date) >= cutoff).length;
+  const uniq = new Set(posts.map(p => p.to));
+  document.getElementById('statEmployees').textContent = uniq.size;
+}
+
+/* ─── Leaderboard ─── */
+function renderLeaderboard() {
+  const counts = {};
+  posts.forEach(p => { counts[p.to] = (counts[p.to] || 0) + 1; });
+  const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0, 5);
+  const rankClass = ['gold','silver','bronze','',''];
+  document.getElementById('leaderboard').innerHTML = sorted.map(([name, count], i) => `
+    <div class="lb-row">
+      <div class="lb-rank ${rankClass[i]}">${['🥇','🥈','🥉',i+1,i+1][i]}</div>
+      <div class="avatar" style="width:26px;height:26px;font-size:.65rem;background:${avatarColor(name)}">${initials(name)}</div>
+      <div class="lb-name">${name}</div>
+      <div class="lb-count">${count} 🏆</div>
+    </div>
+  `).join('');
+}
+
+/* ─── Reactions ─── */
+function react(id, type, btn) {
+  const p = posts.find(x => x.id === id);
+  if (!p) return;
+  const key = type === 'like' ? 'likes' : type === 'clap' ? 'claps' : 'celebrate';
+  if (p.reactions[type]) {
+    p[key]--; delete p.reactions[type]; btn.classList.remove('active');
+  } else {
+    p[key]++; p.reactions[type] = true; btn.classList.add('active');
+  }
+  btn.innerHTML = `${type==='like'?'👍':type==='clap'?'👏':'🎉'} ${p[key]}`;
+}
+
+/* ─── Submit ─── */
+let selectedCat = '';
+
+function selectCat(el, cat) {
+  document.querySelectorAll('.cat-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCat = cat;
+  document.getElementById('fCategory').value = cat;
+}
+
+function submitAppreciation() {
+  const to      = document.getElementById('fTo').value.trim();
+  const reason  = document.getElementById('fReason').value.trim();
+  const msg     = document.getElementById('fMessage').value.trim();
+
+  if (!to)     { alert('Please select a recipient.'); return; }
+  if (!selectedCat) { alert('Please select a category.'); return; }
+  if (!reason) { alert('Please fill in the reason.'); return; }
+  if (!msg)    { alert('Please write an appreciation message.'); return; }
+
+  const newPost = {
+    id: posts.length + 1,
+    from: CURRENT_USER,
+    to, cat: selectedCat, reason, msg,
+    date: new Date().toISOString().slice(0, 10),
+    likes: 0, claps: 0, celebrate: 0, reactions: {}
+  };
+
+  posts.push(newPost);
+
+  // Reset form
+  document.getElementById('fTo').value = '';
+  document.getElementById('fReason').value = '';
+  document.getElementById('fMessage').value = '';
+  document.querySelectorAll('.cat-opt').forEach(o => o.classList.remove('selected'));
+  selectedCat = '';
+
+  showToast('🎉 Appreciation published to the wall!');
+  showPage('wall', document.querySelector('nav button'));
+  document.querySelector('nav button').classList.add('active');
+  document.querySelectorAll('nav button')[1].classList.remove('active');
+}
+
+/* ─── Certificate ─── */
+function openCert(id) {
+  const p = posts.find(x => x.id === id);
+  if (!p) return;
+  activeCertData = p;
+
+  document.getElementById('certRecipient').textContent = p.to;
+  document.getElementById('certMessage').textContent = p.msg;
+  document.getElementById('certIssuer').textContent = p.from;
+  document.getElementById('certDate').textContent = fmtDate(p.date);
+
+  const badge = document.getElementById('certCatBadge');
+  badge.textContent = catIcon(p.cat) + ' ' + p.cat;
+  badge.className = 'category-badge cat-' + p.cat;
+
+  document.getElementById('certModal').classList.add('open');
+}
+
+function closeCert() {
+  document.getElementById('certModal').classList.remove('open');
+}
+
+function downloadCertText() {
+  const p = activeCertData;
+  if (!p) return;
+  const text = `
+INNOWELL ENGINEERING INTERNATIONAL PRIVATE LIMITED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+         CERTIFICATE OF APPRECIATION
+
+This certificate is proudly presented to
+
+         ${p.to.toUpperCase()}
+
+Category : ${p.cat}
+Reason   : ${p.reason}
+
+"${p.msg}"
+
+Issued by : ${p.from}
+Date       : ${fmtDate(p.date)}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+             Innowell Appreciation Portal
+  `.trim();
+
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `Certificate_${p.to.replace(/ /g,'_')}_${p.cat}.txt`;
+  a.click();
+  showToast('⬇ Certificate downloaded!');
+}
+
+/* ─── My Certs ─── */
+function renderMyCerts() {
+  const mine = posts.filter(p => p.to === CURRENT_USER);
+  const grid = document.getElementById('myCerts');
+  if (!mine.length) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="big">🎖️</div><p>No certificates yet. Keep contributing!</p></div>`;
+    return;
+  }
+  grid.innerHTML = mine.map(p => `
+    <div class="cert-thumb" onclick="openCert(${p.id})">
+      <div class="ct-cat">${catIcon(p.cat)} ${p.cat}</div>
+      <div class="ct-name">From ${p.from}</div>
+      <div class="ct-from">${p.reason}</div>
+      <div class="ct-date">${fmtDate(p.date)}</div>
+      <button class="ct-dl" onclick="event.stopPropagation();openCert(${p.id})">View & Download</button>
+    </div>
+  `).join('');
+}
+
+/* ─── Helpers ─── */
+function initials(name) {
+  return name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+}
+
+const colors = ['#3A8FC6','#E05A4B','#D4A847','#4CAF50','#7B5EA7','#E07B39','#2A9D8F','#C06A00'];
+function avatarColor(name) {
+  let h = 0; for (let c of name) h = (h * 31 + c.charCodeAt(0)) % colors.length;
+  return colors[Math.abs(h)];
+}
+
+function catIcon(cat) {
+  return { Innovation:'💡', Leadership:'👑', Excellence:'⭐', Teamwork:'🤝', Dedication:'🔥' }[cat] || '🏅';
+}
+
+function fmtDate(d) {
+  return new Date(d + 'T12:00:00').toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+/* ─── Close modal on overlay click ─── */
+document.getElementById('certModal').addEventListener('click', function(e) {
+  if (e.target === this) closeCert();
+});
+
+/* ─── Init ─── */
+renderFeed();
+</script>
+</body>
+</html>
